@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.dirname(__FILE__)
+require 'rake'
+
+args = "[#{ARGV.join(',')}]"
+
+Rake.application.init
+Rake.application.load_rakefile
+Rake.application.invoke_task("filter:update#{args}")
