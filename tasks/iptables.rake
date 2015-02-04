@@ -13,6 +13,21 @@ SOURCES = [
   }
 ]
 
+(0..19).each do |i|
+  SOURCES.push({
+      url: "http://www.alexa.com/topsites/category;#{i}/Top/Adult",
+      query: 'p.desc-paragraph a',
+    })
+end
+
+# TODO: Add adultranking parse
+# (1..10).each do |i|
+#   SOURCES.push {
+#       url: "http://adultsiteranking.com/home_sub2.asp?mode=&pg=0&page=#{i}&x=kp&listtype=12&pagename=",
+#       query: 'p.desc-paragraph a',
+#     }
+# end
+
 EXCLUDE = [
   'apple.com',
   'amazon.com',
