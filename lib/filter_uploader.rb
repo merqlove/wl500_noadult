@@ -13,16 +13,17 @@ class FilterUploader
   end
 
   def upload_list(list)
-    rules = ['#!/bin/sh','cat <<EOF >> /etc/hosts']
+    rules = ['#!/bin/sh','cat <<EOF > /etc/dnsmasq.block.conf']
     list.each { |url| rules << domain_hosts(url) unless url.include?('reddit') }
     rules << 'EOF'
+    rules << 'echo "conf-file=/etc/dnsmasq.block.conf" >> /etc/dnsmasq.conf'
     rules << 'killall dnsmasq'
     rules << 'dnsmasq --conf-file=/etc/dnsmasq.conf'
     list.each { |url| rules << domain_filter(url) if url.include?('reddit') }
-    scp_upload(rules.join("\n"))
+    upload_post_firewall(rules.join("\n"))
   end
 
-  def update_iptables
+  def update_flash
     reboot
   end
 
@@ -32,9 +33,17 @@ class FilterUploader
       ssh_cmd('flashfs save && flashfs commit && flashfs enable && reboot')
     end
 
-    def scp_upload(data)
+    def upload_post_mount(data)
+      scp_upload "/usr/local/sbin/post-mount", data
+    end
+
+    def upload_post_firewall(data)
+      scp_upload "/usr/local/sbin/post-firewall", data
+    end
+
+    def scp_upload(file, data)
       Net::SCP.start( @host, @user, password: @password ) do |scp|
-        return scp.upload! StringIO.new(data), "/usr/local/sbin/post-firewall"
+        return scp.upload! StringIO.new(data), file
       end
     end
 
@@ -58,8 +67,6 @@ class FilterUploader
     end
 
     def domain_hosts(url)
-      row = ["127.0.0.1 #{url}"]
-      row << "www.#{url}" if url.count('.') == 1
-      row.join(' ')
+      "address=/#{url}/127.0.0.1"
     end
 end

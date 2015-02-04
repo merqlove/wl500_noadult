@@ -82,6 +82,6 @@ namespace :filter do
     list = parser.list.delete_if { |url| EXCLUDE.include?(url) }.concat(INCLUDE).uniq
     uploader = FilterUploader.new(host: host, user: user, password: password)
     uploader.upload_list(list)
-    uploader.update_iptables
+    uploader.update_flash
   end
 end

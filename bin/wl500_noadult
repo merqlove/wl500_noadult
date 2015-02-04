@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-# resolve bin path, ignoring symlinks
 require 'pathname'
 bin_file = Pathname.new(__FILE__).realpath
 
@@ -9,5 +8,8 @@ require 'rake'
 
 args = "[#{ARGV.join(',')}]"
 
-load 'Rakefile'
-Rake::Task.invoke_task("filter:update#{args}")
+Dir.chdir File.expand_path('../../', bin_file)
+
+Rake.application.init
+Rake.application.load_rakefile
+Rake.application.invoke_task("filter:update#{args}")
