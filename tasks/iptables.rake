@@ -84,7 +84,9 @@ INCLUDE = [
   "stulchik.net",
   "intimcity.nl",
   "drtuber.com",
-  "tumblr.com"
+  "tumblr.com",
+  "fuck",
+  "porn"
 ]
 
 namespace :filter do

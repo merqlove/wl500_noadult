@@ -14,12 +14,12 @@ class FilterUploader
 
   def upload_list(list)
     rules = ['#!/bin/sh','cat <<EOF > /etc/dnsmasq.block.conf']
-    list.each { |url| rules << domain_hosts(url) unless url.include?('reddit') }
+    list.each { |url| rules << domain_hosts(url) unless only_iptables(url) }
     rules << 'EOF'
     rules << 'echo "conf-file=/etc/dnsmasq.block.conf" >> /etc/dnsmasq.conf'
     rules << 'killall dnsmasq'
     rules << 'dnsmasq --conf-file=/etc/dnsmasq.conf'
-    list.each { |url| rules << domain_filter(url) if url.include?('reddit') }
+    list.each { |url| rules << domain_filter(url) if only_iptables(url) }
     upload_post_firewall(rules.join("\n"))
   end
 
@@ -68,5 +68,9 @@ class FilterUploader
 
     def domain_hosts(url)
       "address=/#{url}/127.0.0.1"
+    end
+
+    def only_iptables(url)
+      url.include?('reddit') || url.count('.') == 0
     end
 end
