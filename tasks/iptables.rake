@@ -31,6 +31,7 @@ end
 EXCLUDE = [
   'apple.com',
   'amazon.com',
+  'youtube.com',
   'mozilla.org',
   'wepr0n.com',
   'ccleaner.com',
@@ -53,7 +54,8 @@ EXCLUDE = [
   'uploaded.net',
   'mydownloader.net',
   'gotblop.com',
-  'tblop.com'
+  'tblop.com',
+  'https:'
 ]
 
 INCLUDE = [
@@ -64,6 +66,7 @@ INCLUDE = [
   "pornhub.com",
   "pornohub.com",
   "redtube.com",
+  "nudevista.tv",
   "3movs.com",
   "sexed.su",
   "xnxx.com",

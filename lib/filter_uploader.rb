@@ -15,6 +15,8 @@ class FilterUploader
   def upload_list(list)
     rules = ['#!/bin/sh','cat <<EOF > /etc/dnsmasq.block.conf']
     list.each { |url| rules << domain_hosts(url) unless only_iptables(url) }
+    rules << 'address=/www.google.com/216.239.38.120'
+    rules << 'address=/www.google.ru/216.239.38.120'
     rules << 'EOF'
     rules << 'echo "conf-file=/etc/dnsmasq.block.conf" >> /etc/dnsmasq.conf'
     rules << 'killall dnsmasq'
