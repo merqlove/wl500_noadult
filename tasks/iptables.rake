@@ -20,14 +20,14 @@ SOURCES = [
   )
 end
 
-def adultranking(type = 'free', offset = 0, max_page = 1)
+def adultranking(max_page = 1, type = 'free', offset = 0)
   while offset >= 0
     start_page = adultranking_start_page(offset, max_page)
     finish_page = adultranking_finish_page(offset, max_page)
     (start_page..finish_page).each do |page|
       SOURCES.push(
         url: "http://adultsiteranking.com/home_sub2.asp?pg=#{offset}&page=#{offset+page}&x=#{type}&listtype=12",
-        query: '.class2 a'
+        query: 'span.class2 a'
       )
     end
     offset -= 10
@@ -42,10 +42,10 @@ def adultranking_finish_page(offset, max_page)
   (offset + 10) <= max_page ? (offset + 10) : max_page
 end
 
-adultranking('kp', 30, 35)
-adultranking('free', 0, 2)
-adultranking('shop', 0, 2)
-adultranking('chat', 0, 3)
+adultranking(35, 'kp', 30)
+adultranking(2)
+adultranking(2, 'shop')
+adultranking(3, 'chat')
 
 EXCLUDE = [
   'apple.com',
