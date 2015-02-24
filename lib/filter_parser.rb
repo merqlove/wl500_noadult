@@ -5,9 +5,9 @@ require 'nokogiri'
 class FilterParser
   attr_writer :sources
 
-  def initialize(params={})
+  def initialize(params = {})
     params.each do |attr, value|
-      self.public_send("#{attr}=", value)
+      public_send("#{attr}=", value)
     end if params
   end
 
@@ -17,23 +17,23 @@ class FilterParser
 
   private
 
-    def single(source)
-      doc = Nokogiri::HTML(open(source[:url]))
-      doc.encoding = 'utf-8'
+  def single(source)
+    doc = Nokogiri::HTML(open(source[:url]))
+    doc.encoding = 'utf-8'
 
-      doc.css(source[:query]).map do |link|
-        filter_path link.attribute('href').to_s.downcase, source[:clean]
-      end
+    doc.css(source[:query]).map do |link|
+      filter_path link.attribute('href').to_s.downcase, source[:clean]
     end
+  end
 
-    def filter_path(path, clean)
-      return path unless path
-      path = path.sub(clean, '') if clean
-      if path.include?('reddit.com')
-        path = path.sub('http://','')
-      else
-        path = path.split('/')[2]
-      end
-      path.sub('www.', '').sub(/(\?.*)/i, '') if path
+  def filter_path(path, clean)
+    return path unless path
+    path = path.sub(clean, '') if clean
+    if path.include?('reddit.com')
+      path = path.sub('http://', '')
+    else
+      path = path.split('/')[2]
     end
+    path.sub('www.', '').sub(/(\?.*)/i, '') if path
+  end
 end
