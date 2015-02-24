@@ -44,6 +44,8 @@ end
 
 adultranking('kp', 30, 35)
 adultranking('free', 0, 2)
+adultranking('shop', 0, 2)
+adultranking('chat', 0, 3)
 
 EXCLUDE = [
   'apple.com',
